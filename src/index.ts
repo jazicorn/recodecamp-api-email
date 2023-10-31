@@ -13,7 +13,7 @@ const passcodesRoute = require('./routes/passcodes.router');
 
 const app = express();
 require('dotenv').config();
-const { API_ENV, CORS_URL1, DATABASE_URL, DATABASE_ENV } = process.env;
+const { PORT, API_ENV, CORS_URL1, DATABASE_URL, DATABASE_ENV } = process.env;
 
 if( API_ENV === "Production") {
     console.log(`🔄 Production Server Loading...\n---`);
@@ -53,20 +53,20 @@ app.options("/", (req, res) => {
 app.use("/api", indexRoute);
 app.use('/api', passcodesRoute);
 
-const port = parseInt(process.env.PORT as string) || 8000;
+const portInt = PORT || 8000;
 
-app.listen(port, "0.0.0.0", (): void => {
+app.listen(portInt, "0.0.0.0", (): void => {
     if( DATABASE_ENV === "Production") {
         console.log(
-            `🏃🏿‍♀️ Production Server Running Here 👉 http://localhost:${port}\n---`
+            `🏃🏿‍♀️ Production Server Running Here 👉 http://localhost:${portInt}\n---`
         );
     } else if( DATABASE_ENV === "Staging") {
         console.log(
-            `🏃🏿‍♀️ Staging Server Running Here 👉 http://localhost:${port}\n---`
+            `🏃🏿‍♀️ Staging Server Running Here 👉 http://localhost:${portInt}\n---`
         );
     } else {
         console.log(
-            `🏃🏿‍♀️ Development Server Running Here 👉 http://localhost:${port}\n---`
+            `🏃🏿‍♀️ Development Server Running Here 👉 http://localhost:${portInt}\n---`
         );
     }
 });

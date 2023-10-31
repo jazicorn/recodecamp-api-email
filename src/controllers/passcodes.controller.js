@@ -28,7 +28,7 @@ const guestConfirmAccount = async (req, res) => {
                     path: __dirname + '/static/logo.jpg',
                     cid: 'logo'
                 }],
-                html: `<h1>Confirm Recodecamp Account:</h1><button><a href=`${url}`>Confirm Account</a></button>`
+                html: `<h1>Confirm Recodecamp Account:</h1><button><a target="_blank" href=`${url}`>Confirm Account</a></button>`
             }
 
             try {

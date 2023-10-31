@@ -1,0 +1,22 @@
+get:
+  tags:
+    - categories
+  description: Routes for questions in the Python programming language
+  operationId: categoryPython
+  responses:
+    '200':
+      description: Routes Generated Successfully
+      content:
+        application/json:
+          schema:
+            $ref: '../../models/category.schema.yaml'
+
+    '500':
+      description: Internal Server Error
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              errorMessage:
+                type: string

@@ -6,25 +6,9 @@ const nodemailer = require("nodemailer");
 const {google} = require("googleapis");
 // Pull out OAuth from googleapis
 const OAuth2 = google.auth.OAuth2;
-// Import multer
-const multer = require("multer");
 
-// Multer file storage
-export const Storage = multer.diskStorage({
-  destination: function (req, file, callback) {
-    callback(null, "./attachments");
-  },
-  filename: function (req, file, callback) {
-    callback(null, `${file.fieldname}_${Date.now()}_${file.originalname}`);
-  },
-});
 
-// Middleware to get attachments
-export const attachmentUpload = multer({
-  storage: Storage,
-}).single("attachment");
-
-export const createTransporter = async () => {
+ const createTransporter = async () => {
 // 1
   const oauth2Client = new OAuth2(
     process.env.OAUTH_CLIENT_ID,
@@ -64,4 +48,6 @@ export const createTransporter = async () => {
   return transporter;
 };
 
-export default createTransporter;
+module.exports = {
+    createTransporter
+}

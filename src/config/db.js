@@ -83,6 +83,8 @@ const config = () => {
     }
 };
 
-export const sql = config();
+const db = config();
 
-export default sql;
+module.exports = {
+    db
+}

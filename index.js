@@ -1,19 +1,15 @@
-'use strict';
-/* eslint-disable  @typescript-eslint/no-explicit-any */
+require('dotenv').config();
 const express = require("express");
 //const router = require("express-promise-router")();
 const cookieParser = require ("cookie-parser");
-const session = require("express-session");
 const bodyParser = require("body-parser");
-const dotenv =  require("dotenv");
 const cors = require("cors");
 
-const indexRoute = require("./routes/index.router");
-const passcodesRoute = require('./routes/passcodes.router');
+const indexRoute = require("./src/routes/index.router");
+const passcodesRoute = require('./src/routes/passcodes.router');
 
 const app = express();
-require('dotenv').config();
-const { PORT, API_ENV, CORS_URL1, DATABASE_URL, DATABASE_ENV } = process.env;
+const { PORT, API_ENV, CORS_URL1, DATABASE_ENV } = process.env;
 
 if( API_ENV === "Production") {
     console.log(`🔄 Production Server Loading...\n---`);
@@ -24,7 +20,7 @@ if( API_ENV === "Production") {
 }
 
 var corsOptions = {
-  origin: process.env.CORS_URL1
+  origin: CORS_URL1
 };
 
 app.use(cors(corsOptions));
@@ -53,7 +49,7 @@ app.options("/", (req, res) => {
 app.use("/api", indexRoute);
 app.use('/api', passcodesRoute);
 
-const portInt = PORT || 8000;
+const portInt = parseInt(PORT) || 7000;
 
 app.listen(portInt, () => {
     if( DATABASE_ENV === "Production") {

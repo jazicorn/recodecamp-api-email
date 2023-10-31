@@ -11,6 +11,9 @@ coverage/*
 # data definition files
 **/*.d.ts
 
+index.js
+/src
+
 # 3rd party libs
 /src/public/
 

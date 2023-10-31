@@ -1,5 +1,4 @@
-'use strict';
-/* eslint-disable  @typescript-eslint/no-explicit-any */
+
 const router = require("express").Router();
 //const router = require("express-promise-router");
 
@@ -11,5 +10,3 @@ router.post("/verify/account", user.guestVerifyAccount);
 router.post("/password/reset", user.guestPasswordReset);
 
 module.exports = router;
-
-export {};

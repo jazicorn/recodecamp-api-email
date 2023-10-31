@@ -55,7 +55,7 @@ app.use('/api', passcodesRoute);
 
 const portInt = PORT || 8000;
 
-app.listen(portInt, "0.0.0.0", (): void => {
+app.listen(portInt, () => {
     if( DATABASE_ENV === "Production") {
         console.log(
             `🏃🏿‍♀️ Production Server Running Here 👉 http://localhost:${portInt}\n---`

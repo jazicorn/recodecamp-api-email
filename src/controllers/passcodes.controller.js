@@ -1,17 +1,20 @@
 //const { Request, Response } = require('express');
 //const router = require("express-promise-router")();
-const nodemailer = require("nodemailer");
+const nodemailer = require('nodemailer');
 const { v4: uuidv4 } = require('uuid');
 const { sql } = require('../config/db');
-const { createTransporter, attachmentUpload} = require('../middleware/nodemailer');
+const {
+    createTransporter,
+    attachmentUpload,
+} = require('../middleware/nodemailer');
 //const { createEmailHtml } = require('../templates/_email.tsx');
 //const { accountValidation, mailOptionsAccountValidation } = require('../templates/accountValidation.tsx');
 //const validation = require('../templates/accountValidation.tsx');
 require('dotenv').config();
 
 const guestConfirmAccount = async (req, res) => {
-    switch(req.method) {
-        case('POST'):
+    switch (req.method) {
+        case 'POST':
             const data = req.body;
             //console.log("data", data);
             const email = data.email;
@@ -19,50 +22,57 @@ const guestConfirmAccount = async (req, res) => {
             const url = `${process.env.WEBURL}/auth/account/confirm/${passcode}`;
 
             // Mail options
-            const mailOptions  = {
+            const mailOptions = {
                 from: `Recodecamp ${process.env.OAUTH_SENDER_EMAIL}`,
                 to: email,
-                subject: "Account Confirmation",
-                attachments: [{
-                    filename: 'logo',
-                    path: __dirname + '/static/logo.jpg',
-                    cid: 'logo'
-                }],
-                html: `<h1>Confirm Recodecamp Account:</h1><button><a target="_blank" href=${url}>Confirm Account</a></button>`
-            }
+                subject: 'Account Confirmation',
+                // attachments: [{
+                //     filename: 'logo',
+                //     path: __dirname + '/static/logo.jpg',
+                //     cid: 'logo'
+                // }],
+                html: `<p>Thank You for joining Recodecamp! Please Confirm Your New Account:</p><a href="${url}">Confirm Account</a>`,
+            };
 
             try {
                 // Get response from the createTransport
                 let emailTransporter = await createTransporter();
-                //console.log(emailTransporter)
+                //console.log("emailtrans:", emailTransporter)
 
                 //console.log("mailoptions:\n", mailOptions)
                 // Send email
                 emailTransporter.sendMail(mailOptions, function (error, info) {
                     if (error) {
                         // failed block
-                        console.log("Error | Email Confirmation Not Sent:\n" + error);
-                        return res.status(400).send({ error: "Email Confirmation Error" });
+                        console.log(
+                            'Error | Email Confirmation Not Sent:\n' + error
+                        );
+                        return res
+                            .status(400)
+                            .send({ error: 'Email Confirmation Error' });
                     } else {
                         // Success block
-                        console.log("Email sent: " + info.response);
-                        return res.status(200).send({ message: "Email Confirmation Sent"});
+                        console.log('Email sent: ' + info.response);
+                        return res
+                            .status(200)
+                            .send({ message: 'Email Confirmation Sent' });
                     }
                 });
-
             } catch (error) {
-                return  res.status(500).send({ error: "Something went wrong"});
+                return res.status(500).send({ error: 'Something went wrong' });
             }
-            break
+            break;
         default:
-            return res.status(400).send({ error: `${req.method} Method Not Allowed` });
-    };
+            return res
+                .status(400)
+                .send({ error: `${req.method} Method Not Allowed` });
+    }
 };
 
 /**Public: Guest Confirms Account Validate Passcode*/
 const guestValidateAccount = async (req, res) => {
-    switch(req.method) {
-        case('POST'):
+    switch (req.method) {
+        case 'POST':
             try {
                 const data = req.body;
                 //console.log("data:", data);
@@ -98,47 +108,54 @@ const guestValidateAccount = async (req, res) => {
                 const guestResult = updateGuestPasscode[0];
                 //console.log("guestResult:", guestResult);
 
-
-                if( guestResult !== undefined) {
-                    return res.status(200).send({ message: "Successful | Account Confirmed"});
+                if (guestResult !== undefined) {
+                    return res
+                        .status(200)
+                        .send({ message: 'Successful | Account Confirmed' });
                 }
             } catch {
-                return res.status(500).send({ error: "Database Error" });
+                return res.status(500).send({ error: 'Database Error' });
             }
-            break
+            break;
         default:
-            return res.status(400).send({ error: `${req.method} Method Not Allowed` });
-    };
+            return res
+                .status(400)
+                .send({ error: `${req.method} Method Not Allowed` });
+    }
 };
 
 /**Public: Guest Verify Passcode*/
 const guestVerifyAccount = async (req, res) => {
-    switch(req.method) {
-        case('POST'):
+    switch (req.method) {
+        case 'POST':
             try {
-                return res.status(200).send({ message: "success"});
+                return res.status(200).send({ message: 'success' });
             } catch (error) {
-                return  res.status(500).send({ error: "Something went wrong"});
+                return res.status(500).send({ error: 'Something went wrong' });
             }
-            break
+            break;
         default:
-            return res.status(400).send({ error: `${req.method} Method Not Allowed` });
-    };
+            return res
+                .status(400)
+                .send({ error: `${req.method} Method Not Allowed` });
+    }
 };
 
 /**Public: Guest Password Reset*/
 const guestPasswordReset = async (req, res) => {
-    switch(req.method) {
-        case('POST'):
+    switch (req.method) {
+        case 'POST':
             try {
-                return res.status(200).send({ message: "success"});
+                return res.status(200).send({ message: 'success' });
             } catch (error) {
-                return  res.status(500).send({ error: "Something went wrong"});
+                return res.status(500).send({ error: 'Something went wrong' });
             }
-            break
+            break;
         default:
-            return res.status(400).send({ error: `${req.method} Method Not Allowed` });
-    };
+            return res
+                .status(400)
+                .send({ error: `${req.method} Method Not Allowed` });
+    }
 };
 
 module.exports = {
@@ -147,4 +164,3 @@ module.exports = {
     guestVerifyAccount,
     guestPasswordReset,
 };
-

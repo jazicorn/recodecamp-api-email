@@ -19,11 +19,7 @@ if( API_ENV === "Production") {
     console.log(`🔄 Development Server Loading...\n---`);
 }
 
-var corsOptions = {
-  origin: CORS_URL1
-};
-
-app.use(cors(corsOptions));
+app.use(cors(CORS_URL1));
 // parse requests of content-type - application/json
 app.use(express.json());
 // parse requests of content-type - application/x-www-form-urlencoded
@@ -31,15 +27,14 @@ app.use(express.urlencoded({ extended: true }));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(cookieParser());
-app.use(cors({ credentials: true,origin: corsOptions }));
 app.use( (req, res, next) => {
-    res.header("Access-Control-Allow-Origin", `${corsOptions}`);
+    res.header("Access-Control-Allow-Origin", "*");
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
     res.header('Access-Control-Allow-Methods', 'PUT, POST, GET, DELETE, OPTIONS');
     next();
 });
 app.options("/", (req, res) => {
-    res.setHeader("Access-Control-Allow-Origin", `${corsOptions}`);
+    res.setHeader("Access-Control-Allow-Origin", "*");
     res.setHeader("Access-Control-Allow-Methods", "PUT, POST, GET, DELETE, OPTIONS");
     res.setHeader("Access-Control-Allow-Headers", "Content-Type");
     res.sendStatus(204);

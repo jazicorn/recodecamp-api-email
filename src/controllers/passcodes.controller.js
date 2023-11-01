@@ -2,7 +2,7 @@
 //const router = require("express-promise-router")();
 const nodemailer = require('nodemailer');
 const { v4: uuidv4 } = require('uuid');
-const { sql } = require('../config/db');
+//const { sql } = require('../config/db');
 const {
     createTransporter,
     attachmentUpload,
@@ -70,60 +70,60 @@ const guestConfirmAccount = async (req, res) => {
     }
 };
 
-/**Public: Guest Confirms Account Validate Passcode*/
-const guestValidateAccount = async (req, res) => {
-    switch (req.method) {
-        case 'POST':
-            try {
-                const data = req.body;
-                //console.log("data:", data);
-                const passcode = data._PASSCODE;
-                const date = new Date();
-                //console.log(date);
+// /**Public: Guest Confirms Account Validate Passcode*/
+// const guestValidateAccount = async (req, res) => {
+//     switch (req.method) {
+//         case 'POST':
+//             try {
+//                 const data = req.body;
+//                 //console.log("data:", data);
+//                 const passcode = data._PASSCODE;
+//                 const date = new Date();
+//                 //console.log(date);
 
-                /**Validate Guest Data */
-                // Check Guest IP Address
-                const guestIP = req.socket.remoteAddress;
+//                 /**Validate Guest Data */
+//                 // Check Guest IP Address
+//                 const guestIP = req.socket.remoteAddress;
 
-                // complex queries | https://github.com/porsager/postgres
-                /** Update Confirmed to true */
-                const updateGuestPasscodeConfirmed = await sql`
-                    UPDATE _GUEST
-                    SET _PASSCODE_CONFIRMED = true
-                    WHERE _PASSCODE = ${passcode};
-                `;
-                //console.log("updateGuestPasscode:", updateGuestPasscode);
-                const updateGuestDate = await sql`
-                    UPDATE _GUEST
-                    SET _UPDATED_AT = ${date}
-                    WHERE _PASSCODE = ${passcode};
-                `;
+//                 // complex queries | https://github.com/porsager/postgres
+//                 /** Update Confirmed to true */
+//                 const updateGuestPasscodeConfirmed = await sql`
+//                     UPDATE _GUEST
+//                     SET _PASSCODE_CONFIRMED = true
+//                     WHERE _PASSCODE = ${passcode};
+//                 `;
+//                 //console.log("updateGuestPasscode:", updateGuestPasscode);
+//                 const updateGuestDate = await sql`
+//                     UPDATE _GUEST
+//                     SET _UPDATED_AT = ${date}
+//                     WHERE _PASSCODE = ${passcode};
+//                 `;
 
-                const newId = uuidv4();
-                const updateGuestPasscode = await sql`
-                    UPDATE _GUEST
-                    SET _PASSCODE = ${newId}
-                    WHERE _PASSCODE = ${passcode}
-                    RETURNING *;
-                `;
-                const guestResult = updateGuestPasscode[0];
-                //console.log("guestResult:", guestResult);
+//                 const newId = uuidv4();
+//                 const updateGuestPasscode = await sql`
+//                     UPDATE _GUEST
+//                     SET _PASSCODE = ${newId}
+//                     WHERE _PASSCODE = ${passcode}
+//                     RETURNING *;
+//                 `;
+//                 const guestResult = updateGuestPasscode[0];
+//                 //console.log("guestResult:", guestResult);
 
-                if (guestResult !== undefined) {
-                    return res
-                        .status(200)
-                        .send({ message: 'Successful | Account Confirmed' });
-                }
-            } catch {
-                return res.status(500).send({ error: 'Database Error' });
-            }
-            break;
-        default:
-            return res
-                .status(400)
-                .send({ error: `${req.method} Method Not Allowed` });
-    }
-};
+//                 if (guestResult !== undefined) {
+//                     return res
+//                         .status(200)
+//                         .send({ message: 'Successful | Account Confirmed' });
+//                 }
+//             } catch {
+//                 return res.status(500).send({ error: 'Database Error' });
+//             }
+//             break;
+//         default:
+//             return res
+//                 .status(400)
+//                 .send({ error: `${req.method} Method Not Allowed` });
+//     }
+// };
 
 /**Public: Guest Verify Passcode*/
 const guestVerifyAccount = async (req, res) => {
@@ -161,7 +161,6 @@ const guestPasswordReset = async (req, res) => {
 
 module.exports = {
     guestConfirmAccount,
-    guestValidateAccount,
     guestVerifyAccount,
     guestPasswordReset,
 };

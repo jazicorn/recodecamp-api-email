@@ -15,7 +15,7 @@ require('dotenv').config();
 const guestConfirmAccount = async (req, res) => {
     switch (req.method) {
         case 'POST':
-            const data = req.body.data;
+            const data = req.body;
             //console.log("data", data);
             const email = data.email;
             const passcode = data.passcode;

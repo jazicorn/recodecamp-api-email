@@ -12,11 +12,11 @@ const app = express();
 const { PORT, API_ENV, CORS_URL1, DATABASE_ENV } = process.env;
 
 if( API_ENV === "Production") {
-    console.log(`🔄 Production Server Loading...\n---`);
+    console.log(`---\n🔄 Production Server Loading...\n---`);
 } else if( API_ENV === "Staging") {
-    console.log(`🔄 Staging Server Loading...\n---`);
+    console.log(`---\n🔄 Staging Server Loading...\n---`);
 } else {
-    console.log(`🔄 Development Server Loading...\n---`);
+    console.log(`---\n🔄 Development Server Loading...\n---`);
 }
 
 app.use(cors(CORS_URL1));
@@ -49,15 +49,15 @@ const portInt = parseInt(PORT) || 7000;
 app.listen(portInt, () => {
     if( DATABASE_ENV === "Production") {
         console.log(
-            `🏃🏿‍♀️ Production Server Running Here 👉 http://localhost:${portInt}\n---`
+            `🏃‍♀️ Production Server Running Here 👉 http://localhost:${portInt}\n---`
         );
     } else if( DATABASE_ENV === "Staging") {
         console.log(
-            `🏃🏿‍♀️ Staging Server Running Here 👉 http://localhost:${portInt}\n---`
+            `🏃‍♀️ Staging Server Running Here 👉 http://localhost:${portInt}\n---`
         );
     } else {
         console.log(
-            `🏃🏿‍♀️ Development Server Running Here 👉 http://localhost:${portInt}\n---`
+            `🏃‍♀️ Development Server Running Here 👉 http://localhost:${portInt}\n---`
         );
     }
 });

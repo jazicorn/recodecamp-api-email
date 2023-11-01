@@ -15,10 +15,10 @@ require('dotenv').config();
 const guestConfirmAccount = async (req, res) => {
     switch (req.method) {
         case 'POST':
-            const data = req.body.data;
+            const data = req.body;
             console.log("data", data);
-            const email = data.email;
-            const passcode = data.passcode;
+            const email = data.data.email;
+            const passcode = data.data.passcode;
             const url = `${process.env.WEB_URL_ACCOUNT_CONFIRM}/${passcode}`;
             //console.log("url:", url)
 

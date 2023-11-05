@@ -17,8 +17,21 @@ const guestConfirmAccount = async (req, res) => {
         case 'POST':
             const data = req.body;
             //console.log("data", data);
-            const email = data.email;
-            const passcode = data.passcode;
+            let email = data.email;
+            let passcode = data.passcode;
+            let passcodeConfirmed = data.passcode_confirmed;
+            if (email === undefined) {
+                email = data._email;
+            }
+            if (passcode === undefined) {
+                passcode = data._passcode;
+            }
+            if (passcodeConfirmed === undefined) {
+                passcodeConfirmed = data._passcode_confirmed;
+            }
+            if(passcodeConfirmed === true) {
+                return res.status(400).send({ error: 'Email Already Confirmed' });
+            }
             const url = `${process.env.WEB_URL_ACCOUNT_CONFIRM}/${passcode}`;
             //console.log("url:", url)
 
@@ -56,7 +69,7 @@ const guestConfirmAccount = async (req, res) => {
                         console.log('Email sent: ' + info.response);
                         return res
                             .status(200)
-                            .send({ message: 'Email Confirmation Sent' });
+                            .send({ data: true });
                     }
                 });
             } catch (error) {

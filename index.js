@@ -4,6 +4,7 @@ const express = require("express");
 const cookieParser = require ("cookie-parser");
 const bodyParser = require("body-parser");
 const cors = require("cors");
+const cron = require("node-cron");
 
 const indexRoute = require("./src/routes/index.router");
 const passcodesRoute = require('./src/routes/passcodes.router');
@@ -60,4 +61,12 @@ app.listen(portInt, () => {
             `🏃‍♀️ Development Server Running Here 👉 http://localhost:${portInt}\n---`
         );
     }
+});
+
+cron.schedule("*/5 * * * *", function () {
+  console.log("\n***");
+  console.log(`⏰ Waking Up Server | Every 5 minutes`);
+  console.log("---");
+  console.log(`📝 Server Time: ${new Date().toISOString()}`)
+  console.log("***");
 });

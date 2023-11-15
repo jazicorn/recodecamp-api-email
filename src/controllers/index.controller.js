@@ -5,7 +5,7 @@ const helloWorld = async (req, res) => {
     switch(req.method) {
         case('GET'):
                 try {
-                const data = await { data: "Hello World!" };
+                    const data = await { data: "Hello World!" };
                 return res.status(200).send(data);
             } catch {
                 return res.status(500).send({ error: "Something went wrong"});

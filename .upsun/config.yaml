@@ -18,14 +18,14 @@ applications:
     # to the application in the PLATFORM_RELATIONSHIPS variable. The right-hand
     # side is in the form `<service name>:<endpoint name>`.
     # More information: https://docs.upsun.com/create-apps/app-reference.html#relationships
-    relationships:
-      postgresql:
-        service: "postgresql"
-        endpoint: "postgresql:postgresql"
-      redis:
-        service: "redis"
-        endpoint: "redis:redis"
-      
+    # relationships:
+    #   postgresql:
+    #     service: "postgresql"
+    #     endpoint: "postgresql:postgresql"
+    #   redis:
+    #     service: "redis"
+    #     endpoint: "redis:redis"
+
 
     # Mounts define directories that are writable after the build is complete.
     # More information: https://docs.upsun.com/create-apps/app-reference.html#mounts
@@ -55,8 +55,8 @@ applications:
       locations:
         "/":
           passthru: true
-          
-        
+
+
 
     # Alternate copies of the application to run as background processes.
     # More information: https://docs.upsun.com/create-apps/app-reference.html#workers
@@ -100,13 +100,13 @@ applications:
       build: |
         set -eux
         npm i
-        
+
       # The deploy hook is run after the app container has been started, but before it has started accepting requests.
       # More information: https://docs.upsun.com/create-apps/hooks/hooks-comparison.html#deploy-hook
       deploy: |
         set -eux
         # echo 'Put your deploy command here'
-        
+
 
       # The post_deploy hook is run after the app container has been started and after it has started accepting requests.
       # More information: https://docs.upsun.com/create-apps/hooks/hooks-comparison.html#deploy-hook
@@ -135,7 +135,7 @@ services:
   redis:
     type: redis:7.0 # All available versions are: 7.0, 6.2
 
-  
+
 
 # The routes of the project.
 #

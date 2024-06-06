@@ -12,6 +12,36 @@ const {
 //const validation = require('../templates/accountValidation.tsx');
 require('dotenv').config();
 
+/** Bull Message Queue */
+const Queue = require('bull');
+const emailQueue = new Queue('queue', process.env.REDIS_URL);
+
+emailQueue.process(async (job, done) => {
+    try {
+        // Get response from the createTransport
+        let emailTransporter = await createTransporter();
+        //console.log("emailtrans:", emailTransporter)
+
+        //console.log("job.data:\n", job.data)
+        // Send email
+        emailTransporter.sendMail(job.data, function (error, info) {
+            if (error) {
+                // failed block
+                console.log(
+                    'Error | Email Confirmation Not Sent:\n' + error
+                );
+            } else {
+                // Success block
+                console.log('Email sent: ' + info.response);
+            }
+        });
+        done();
+    } catch (error) {
+        return res.status(500).send({ error: 'Something went wrong' });
+    }
+});
+
+/** Passcode Routes */
 const guestConfirmAccount = async (req, res) => {
     switch (req.method) {
         case 'POST':
@@ -48,33 +78,37 @@ const guestConfirmAccount = async (req, res) => {
                 html: `<p>Thank You for joining Recodecamp! Please Confirm Your New Account:</p><a href="${url}">Confirm Account</a>`,
             };
 
-            try {
-                // Get response from the createTransport
-                let emailTransporter = await createTransporter();
-                //console.log("emailtrans:", emailTransporter)
+            emailQueue.add(mailOptions);
 
-                //console.log("mailoptions:\n", mailOptions)
-                // Send email
-                emailTransporter.sendMail(mailOptions, function (error, info) {
-                    if (error) {
-                        // failed block
-                        console.log(
-                            'Error | Email Confirmation Not Sent:\n' + error
-                        );
-                        return res
-                            .status(400)
-                            .send({ error: 'Email Confirmation Error' });
-                    } else {
-                        // Success block
-                        console.log('Email sent: ' + info.response);
-                        return res
-                            .status(200)
-                            .send({ data: true });
-                    }
-                });
-            } catch (error) {
-                return res.status(500).send({ error: 'Something went wrong' });
-            }
+            // try {
+            //     // Get response from the createTransport
+            //     let emailTransporter = await createTransporter();
+            //     //console.log("emailtrans:", emailTransporter)
+
+            //     //console.log("mailoptions:\n", mailOptions)
+            //     // Send email
+            //     emailTransporter.sendMail(mailOptions, function (error, info) {
+            //         if (error) {
+            //             // failed block
+            //             console.log(
+            //                 'Error | Email Confirmation Not Sent:\n' + error
+            //             );
+            //             return res
+            //                 .status(400)
+            //                 .send({ error: 'Email Confirmation Error' });
+            //         } else {
+            //             // Success block
+            //             console.log('Email sent: ' + info.response);
+            //             return res
+            //                 .status(200)
+            //                 .send({ data: true });
+            //         }
+            //     });
+            // } catch (error) {
+            //     return res.status(500).send({ error: 'Something went wrong' });
+            // }
+            // This is non blocking
+            return res.status(200).send({ data: true });
             break;
         default:
             return res
